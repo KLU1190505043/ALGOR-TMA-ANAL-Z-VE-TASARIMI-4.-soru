@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+  
+  /*
+  Veri sıralama işlemi için en iyi algoritma, dizi boyutuna ve özelliklerine bağlı olarak değişebilir.
+  Ancak genellikle en iyi algoritma, O(n log n) zaman karmaşıklığına sahip olan QuickSort veya MergeSort'tur.
+  Bu algoritmalar, verileri hızlı bir şekilde sıralayabilir ve daha büyük dizilerde bile iyi performans gösterir.
+  */
+    
+  function merge(left, right) {
+  let result = [];
+  let i = 0;
+  let j = 0;
+  while (i < left.length && j < right.length) {
+    if (left[i] < right[j]) {
+      result.push(left[i]);
+      i++;
+    } else {
+      result.push(right[j]);
+      j++;
+    }
+  }
+  return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
+function mergeSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  const middle = Math.floor(arr.length / 2);
+  const left = arr.slice(0, middle);
+  const right = arr.slice(middle);
+  return merge(mergeSort(left), mergeSort(right));
+}
+
+
+// 10000 sayılık dizi üzerinde test ediyoruz
+let arr = [];
+for (let i = 0; i < 10000; i++) {
+  arr.push(Math.floor(Math.random() * 10000) + 1);
+}
+
+console.time("mergeSort");
+let sortedArr = mergeSort(arr);
+console.timeEnd("mergeSort");
+console.log("Sorted array is: ", sortedArr);
+
+
+
+// BruteForce bir algoritmanın çalışma süresini hesaplayıp ve iki algoritmayı kıyaslayoruz.
+function bruteForceSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] > arr[j]) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+console.time("bruteForceSort");
+let sortedArrBruteForce = bruteForceSort(arr);
+console.timeEnd("bruteForceSort");
+console.log("Sorted array (brute force) is: ", sortedArrBruteForce);
+
+
+</script>
+</html>
